@@ -11,10 +11,7 @@ namespace CustomerAccount.Application.Customers.Commands.CreateCustomer
         public CreateCustomerCommandValidator(IApplicationDbContext context)
         {
             _context = context;
-        }
 
-        public CreateCustomerCommandValidator()
-        {
             RuleFor(v => v.FullName)
                 .MaximumLength(200)
                 .NotEmpty();
@@ -22,7 +19,10 @@ namespace CustomerAccount.Application.Customers.Commands.CreateCustomer
             RuleFor(v => v.NationalCode)
                 .MaximumLength(10).NotEmpty()
                 .MustAsync(BeUniqueTitle).WithMessage("The National code already exists."); ;
+
         }
+
+       
         public async Task<bool> BeUniqueTitle(string NationalCode, CancellationToken cancellationToken)
         {
             return !await _context.Customers

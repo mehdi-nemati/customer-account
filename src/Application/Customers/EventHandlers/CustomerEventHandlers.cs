@@ -23,4 +23,17 @@ public class CustomerEventHandlers : IEventInvoke, ICustomerEventHandlers
 
         await _eventStore.SaveAsync(eventModel);
     }
+
+    public async Task On(CustomerBalanceChangedEvent @event)
+    {
+        var eventModel = new EventModel
+        {
+            TimeStamp = DateTime.Now,
+            AggregateIdentifier = @event.Customer.Id,
+            EventType = @event.GetType().Name,
+            EventData = @event
+        };
+
+        await _eventStore.SaveAsync(eventModel);
+    }
 }
